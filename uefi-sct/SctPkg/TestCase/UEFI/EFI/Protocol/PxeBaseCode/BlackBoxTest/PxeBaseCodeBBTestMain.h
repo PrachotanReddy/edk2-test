@@ -578,6 +578,12 @@ LogChar8String(
   IN UINTN                              Len
   );
 
+EFI_STATUS
+LocateDevicePathFromBcInterface (
+  IN EFI_PXE_BASE_CODE_PROTOCOL             *BcInterface,
+  IN EFI_DEVICE_PATH_PROTOCOL                 **DevicePath,
+  IN EFI_STANDARD_TEST_LIBRARY_PROTOCOL       *StandardLib
+  );
 //
 // Entry GUIDs
 //

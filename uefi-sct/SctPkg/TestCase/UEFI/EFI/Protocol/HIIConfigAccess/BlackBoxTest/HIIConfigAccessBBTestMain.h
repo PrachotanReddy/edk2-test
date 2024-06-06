@@ -149,6 +149,12 @@ GetDevicePath (
   );
 
 EFI_STATUS
+LocateDevicePathFromHIIConfigAccess (
+  IN  EFI_HII_CONFIG_ACCESS_PROTOCOL    *ConfigAccess,
+  IN EFI_DEVICE_PATH_PROTOCOL **DevicePath
+  );
+
+EFI_STATUS
 GetCorrespondingRequest (
   IN     EFI_STRING    MultiConfigAltResp,
   IN     EFI_STRING    DevicePath,

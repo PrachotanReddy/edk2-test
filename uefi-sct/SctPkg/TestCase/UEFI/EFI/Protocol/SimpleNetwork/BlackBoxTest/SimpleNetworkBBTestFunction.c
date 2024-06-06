@@ -267,7 +267,8 @@ BBTestInitializeFunctionTest (
   EFI_TEST_ASSERTION                    AssertionType;
   EFI_SIMPLE_NETWORK_PROTOCOL           *SnpInterface;
   EFI_SIMPLE_NETWORK_STATE              State1, State2;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -286,6 +287,24 @@ BBTestInitializeFunctionTest (
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkStarted.
   // If not, change the state to EfiSimpleNetworkStarted.
@@ -416,7 +435,8 @@ BBTestResetFunctionTest (
   UINTN                                 StatisticsSize1;
   EFI_NETWORK_STATISTICS                StatisticsTable2;
   UINTN                                 StatisticsSize2;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -435,6 +455,24 @@ BBTestResetFunctionTest (
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.
@@ -597,7 +635,8 @@ BBTestShutdownFunctionTest (
   EFI_TEST_ASSERTION                    AssertionType;
   EFI_SIMPLE_NETWORK_PROTOCOL           *SnpInterface;
   EFI_SIMPLE_NETWORK_STATE              State1, State2;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -616,6 +655,24 @@ BBTestShutdownFunctionTest (
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.
@@ -710,7 +767,8 @@ BBTestReceiveFilterFunctionTest (
   UINT32                                ReceiveFilterMask;
   UINT32                                SupportedFilter;
   UINT32                                Index;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -729,6 +787,24 @@ BBTestReceiveFilterFunctionTest (
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.
@@ -970,7 +1046,8 @@ BBTestStationAddressFunctionTest (
   EFI_MAC_ADDRESS                       MacAddress;
   INTN                                  CheckPoint1, CheckPoint2;
   EFI_MAC_ADDRESS                       BackMacAddress;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -989,6 +1066,24 @@ BBTestStationAddressFunctionTest (
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.
@@ -1129,7 +1224,8 @@ BBTestStatisticsFunctionTest (
   EFI_NETWORK_STATISTICS                StatisticsTable2;
   UINTN                                 StatisticsSize;
   EFI_TEST_LOGGING_LIBRARY_PROTOCOL     *LoggingLib;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -1155,12 +1251,29 @@ BBTestStatisticsFunctionTest (
   if (EFI_ERROR(Status)) {
     return Status;
   }
-
   //
   // Get the EFI_SIMPLE_NETWORK_PROTOCOL Protocol interface to be tested
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.
@@ -1299,7 +1412,8 @@ BBTestMCastIpToMacFunctionTest (
   EFI_IP_ADDRESS                        IP;
   EFI_MAC_ADDRESS                       MAC1;
   EFI_MAC_ADDRESS                       MAC2;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -1318,6 +1432,24 @@ BBTestMCastIpToMacFunctionTest (
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.
@@ -1435,7 +1567,8 @@ BBTestNVDataFunctionTest (
   VOID                                  *Buffer;
   VOID                                  *Buffer1;
   VOID                                  *Buffer2;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -1454,6 +1587,24 @@ BBTestNVDataFunctionTest (
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.
@@ -1684,7 +1835,8 @@ BBTestGetStatusFunctionTest (
   EFI_NETWORK_STATISTICS                StatisticsTable1;
   UINTN                                 StatisticsSize;
   EFI_EVENT                             TimeoutEvent;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -1703,6 +1855,24 @@ BBTestGetStatusFunctionTest (
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.
@@ -1984,7 +2154,8 @@ BBTestTransmitFunctionTest (
   EFI_EVENT                             TimeoutEvent;
   UINT32                                IntStatus;
   VOID                                  *TxBuf;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -2016,6 +2187,24 @@ BBTestTransmitFunctionTest (
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.
@@ -2259,7 +2448,8 @@ BBTestReceiveFunctionTest (
   UINTN                                 StatisticsSize;
   UINTN                                 WaitIndex;
   EFI_INPUT_KEY                         Key;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // Get the Standard Library Interface
   //
@@ -2285,12 +2475,29 @@ BBTestReceiveFunctionTest (
   if (EFI_ERROR(Status)) {
     return Status;
   }
-
   //
   // Get the EFI_SIMPLE_NETWORK_PROTOCOL Protocol interface to be tested
   //
   SnpInterface = (EFI_SIMPLE_NETWORK_PROTOCOL *)ClientInterface;
 
+  Status = LocateDevicePathFromSnpInterface(SnpInterface,&DevicePath,StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        return Status;
+      }
+      DevicePathStr=NULL;
+    }
+  }
   //
   // Check whether the state of network interface is EfiSimpleNetworkInitialized.
   // If not, change the state to EfiSimpleNetworkInitialized.

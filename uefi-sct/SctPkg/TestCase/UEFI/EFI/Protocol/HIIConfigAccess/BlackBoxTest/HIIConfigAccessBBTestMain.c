@@ -381,6 +381,71 @@ GetDevicePath (
   return Status;
 }
 
+EFI_STATUS
+LocateDevicePathFromHIIConfigAccess (
+  IN  EFI_HII_CONFIG_ACCESS_PROTOCOL    *ConfigAccess,
+  IN EFI_DEVICE_PATH_PROTOCOL **DevicePath
+  )
+{
+  EFI_STATUS                        Status;
+  UINTN                             Index;
+  UINTN                             NoHandles;
+  EFI_HANDLE                        *HandleBuffer;
+  EFI_HANDLE                        ConfigAccessHandle = NULL;
+  EFI_HII_CONFIG_ACCESS_PROTOCOL    *TestedConfigAccess;
+  UINTN                             Length;
+  UINTN                             PathHdrSize;
+
+  //
+  // locate all Hii Configuration Access Protocol Instances
+  //
+  Status = gtBS->LocateHandleBuffer (
+                   ByProtocol,
+                   &gBlackBoxEfiHIIConfigAccessProtocolGuid,
+                   NULL,
+                   &NoHandles,
+                   &HandleBuffer
+                   );
+  if (EFI_ERROR(Status) || (NoHandles == 0)) {
+    return EFI_NOT_FOUND;
+  }
+
+  //
+  // scan for the handle that matched with the Hii Configuration Access Protocol that
+  // passed in by the test framework
+  //
+  for (Index = 0; Index < NoHandles; Index++) {
+    Status = gtBS->HandleProtocol (
+                     HandleBuffer[Index],
+                     &gBlackBoxEfiHIIConfigAccessProtocolGuid,
+                     (VOID **) &TestedConfigAccess
+                     );
+    if (EFI_ERROR(Status)) {
+      continue;
+    }
+
+    if (TestedConfigAccess == ConfigAccess) {
+      ConfigAccessHandle = HandleBuffer[Index];
+      break;
+    }
+  }
+
+  gtBS->FreePool (HandleBuffer);
+
+  if (ConfigAccessHandle == NULL) {
+    return EFI_NOT_FOUND;
+  }
+
+  //
+  // find controller handles managed by the component name handle.
+  //
+  Status = gtBS->HandleProtocol (
+                   ConfigAccessHandle,
+                   &gBlackBoxEfiDevicePathProtocolGuid,
+                   (void **) DevicePath
+                   );
+  return Status;
+}
 
 EFI_STATUS
 GetCorrespondingRequest (

@@ -336,3 +336,98 @@ BBTestSimpleNetworkUnload (
            );
 }
 
+
+EFI_STATUS
+LocateDevicePathFromSnpInterface(
+  IN EFI_SIMPLE_NETWORK_PROTOCOL *SnpInterface,
+  IN EFI_DEVICE_PATH_PROTOCOL **DevicePath,
+  IN EFI_STANDARD_TEST_LIBRARY_PROTOCOL *StandardLib
+  )
+{
+  EFI_STATUS Status;
+
+  UINTN NoHandles, Index;
+  EFI_HANDLE *HandleBuffer;
+  EFI_SIMPLE_NETWORK_PROTOCOL *OtherSnpInterface;
+
+  //
+  // Locate the Handle that the SnpInterface is bound to
+  //
+  Status = gtBS->LocateHandleBuffer(
+      ByProtocol,
+      &gBlackBoxEfiSimpleNetworkProtocolGuid,
+      NULL,
+      &NoHandles,
+      &HandleBuffer);
+  if (EFI_ERROR(Status)) {
+    StandardLib->RecordAssertion(
+        StandardLib,
+        EFI_TEST_ASSERTION_FAILED,
+        gTestGenericFailureGuid,
+        L"BS.LocateHandle - LocateHandle",
+        L"%a:%d:Status - %r",
+        __FILE__,
+        (UINTN)__LINE__,
+        Status);
+    return Status;
+  }
+
+  if (NoHandles <= 0) {
+    StandardLib->RecordAssertion(
+        StandardLib,
+        EFI_TEST_ASSERTION_FAILED,
+        gTestGenericFailureGuid,
+        L"BS.LocateHandle - LocateHandle",
+        L"%a:%d:Device Error",
+        __FILE__,
+        (UINTN)__LINE__);
+    return EFI_DEVICE_ERROR;
+  }
+
+  //
+  // Find the exact handle that SnpInterface bound to
+  //
+  for (Index = 0; Index < NoHandles; Index++) {
+    Status = gtBS->HandleProtocol(
+        HandleBuffer[Index],
+        &gBlackBoxEfiSimpleNetworkProtocolGuid,
+        (VOID **) &OtherSnpInterface);
+    if (EFI_ERROR(Status)) {
+      StandardLib->RecordAssertion(
+          StandardLib,
+          EFI_TEST_ASSERTION_FAILED,
+          gTestGenericFailureGuid,
+          L"BS.HandleProtocol - HandleProtocol",
+          L"%a:%d:Status - %r",
+          __FILE__,
+          (UINTN)__LINE__,
+          Status);
+
+      gtBS->FreePool(HandleBuffer);
+      return Status;
+    }
+
+    if (OtherSnpInterface == SnpInterface) {
+      break;
+    }
+  }
+
+  //
+  // Locate the Loaded DevicePath Protocol bound to SIMPLE_NETWORK Protocol
+  //
+  if (Index >= NoHandles) {
+    //
+    // No Handle Found!!
+    //
+    gtBS->FreePool(HandleBuffer);
+    return EFI_DEVICE_ERROR;
+  }
+
+  Status = gtBS->HandleProtocol(
+      HandleBuffer[Index],
+      &gBlackBoxEfiDevicePathProtocolGuid,
+      (VOID **) DevicePath);
+
+  gtBS->FreePool(HandleBuffer);
+  return Status;
+}

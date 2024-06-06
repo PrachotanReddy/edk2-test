@@ -49,3 +49,5 @@
   EfiTestLib
 
 [Protocols]
+  gEfiAdapterInformationProtocolGuid
+  gBlackBoxEfiDevicePathProtocolGuid

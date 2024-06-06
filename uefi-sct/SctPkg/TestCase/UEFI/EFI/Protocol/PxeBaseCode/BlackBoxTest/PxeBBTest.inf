@@ -58,3 +58,4 @@
   gBlackBoxEfiSimpleNetworkProtocolGuid
   gBlackBoxEfiPxeBaseCodeProtocolGuid
   gBlackBoxEfiPxeBaseCodeCallbackProtocolGuid
+  gBlackBoxEfiDevicePathProtocolGuid

@@ -93,7 +93,8 @@ BBTestGetInformationConformanceTest (
   EFI_STANDARD_TEST_LIBRARY_PROTOCOL    *StandardLib;
   EFI_STATUS                            Status;
   EFI_ADAPTER_INFORMATION_PROTOCOL      *AdapterInfo;
-
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // init
   //
@@ -111,6 +112,35 @@ BBTestGetInformationConformanceTest (
     return Status;
   }
 
+  Status = LocateDevicePathFromAdapterInfo (AdapterInfo, &DevicePath, StandardLib);
+
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        StandardLib->RecordAssertion (
+                       StandardLib,
+                       EFI_TEST_ASSERTION_FAILED,
+                       gTestGenericFailureGuid,
+                       L"BS.FreePool - Free device path string",
+                       L"%a:%d:Status - %r",
+                       __FILE__,
+                       (UINTN)__LINE__,
+                       Status
+                       );
+        return Status;
+      }
+      DevicePathStr = NULL;
+    }
+  }
   //
   //Call check points
   //
@@ -137,7 +167,8 @@ BBTestSetInformationConformanceTest (
   EFI_STANDARD_TEST_LIBRARY_PROTOCOL    *StandardLib;
   EFI_STATUS                            Status;
   EFI_ADAPTER_INFORMATION_PROTOCOL      *AdapterInfo;
-                                        
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // init
   //
@@ -155,6 +186,35 @@ BBTestSetInformationConformanceTest (
     return Status;
   }
 
+  Status = LocateDevicePathFromAdapterInfo ( AdapterInfo, &DevicePath, StandardLib);
+
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if (EFI_ERROR(Status)) {
+        StandardLib->RecordAssertion (
+                       StandardLib,
+                       EFI_TEST_ASSERTION_FAILED,
+                       gTestGenericFailureGuid,
+                       L"BS.FreePool - Free device path string",
+                       L"%a:%d:Status - %r",
+                       __FILE__,
+                       (UINTN)__LINE__,
+                       Status
+                       );
+        return Status;
+      }
+      DevicePathStr = NULL;
+    }
+  }
   //
   //Call check points
   //
@@ -178,7 +238,8 @@ BBTestGetSupportedTypesConformanceTest (
   EFI_STANDARD_TEST_LIBRARY_PROTOCOL    *StandardLib;
   EFI_STATUS                            Status;
   EFI_ADAPTER_INFORMATION_PROTOCOL      *AdapterInfo;
-                                        
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // init
   //
@@ -195,7 +256,24 @@ BBTestGetSupportedTypesConformanceTest (
   if ( EFI_ERROR(Status) ) {
     return Status;
   }
-
+  Status = LocateDevicePathFromAdapterInfo( AdapterInfo, &DevicePath, StandardLib);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if ( EFI_ERROR(Status) ) {
+        return Status;
+      }
+      DevicePathStr = NULL;
+    }
+  }
   //
   //Call check points
   //

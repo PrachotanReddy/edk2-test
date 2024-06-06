@@ -207,3 +207,109 @@ UnloadAdapterInfoBBTest (
              gBBTestProtocolInterface
              );
 }
+
+EFI_STATUS
+LocateDevicePathFromAdapterInfo (
+  IN EFI_ADAPTER_INFORMATION_PROTOCOL *AdapterInfo,
+  IN EFI_DEVICE_PATH_PROTOCOL **DevicePath,
+  IN EFI_STANDARD_TEST_LIBRARY_PROTOCOL *StandardLib
+  )
+
+{
+  EFI_STATUS Status;
+
+  UINTN NoHandles, Index;
+  EFI_HANDLE *HandleBuffer;
+  EFI_ADAPTER_INFORMATION_PROTOCOL *OtherAdapterInfo;
+
+  //
+  // Locate the Handle that the AdapterInfo is bound to
+  //
+  Status = gtBS->LocateHandleBuffer(
+      ByProtocol,
+      &gEfiAdapterInformationProtocolGuid,
+      NULL,
+      &NoHandles,
+      &HandleBuffer);
+  if (EFI_ERROR(Status)) {
+
+    StandardLib->RecordAssertion(
+        StandardLib,
+        EFI_TEST_ASSERTION_FAILED,
+        gTestGenericFailureGuid,
+        L"BS.LocateHandle - LocateHandle",
+        L"%a:%d:Status - %r",
+        __FILE__,
+        (UINTN)__LINE__,
+        Status);
+    return Status;
+  }
+
+  if (NoHandles <= 0) {
+    StandardLib->RecordAssertion(
+        StandardLib,
+        EFI_TEST_ASSERTION_FAILED,
+        gTestGenericFailureGuid,
+        L"BS.LocateHandle - LocateHandle",
+        L"%a:%d:Device Error",
+        __FILE__,
+        (UINTN)__LINE__);
+    return EFI_UNSUPPORTED;
+  }
+
+  //
+  // Find the exact handle that AdapterInfo bound to
+  //
+  for (Index = 0; Index < NoHandles; Index++) {
+
+    Status = gtBS->HandleProtocol(
+        HandleBuffer[Index],
+        &gEfiAdapterInformationProtocolGuid,
+        (VOID **) &OtherAdapterInfo
+        );
+
+    if (EFI_ERROR(Status)) {
+
+      StandardLib->RecordAssertion(
+          StandardLib,
+          EFI_TEST_ASSERTION_FAILED,
+          gTestGenericFailureGuid,
+          L"BS.HandleProtocol - HandleProtocol",
+          L"%a:%d:Status - %r",
+          __FILE__,
+          (UINTN)__LINE__,
+          Status);
+
+      gtBS->FreePool(HandleBuffer);
+      return Status;
+    }
+
+    if (OtherAdapterInfo == AdapterInfo) {
+      break;
+    }
+
+  }
+
+  //
+  // Locate the Loaded DevicePath Protocol bound to ADAPTER_INFORMATION Protocol
+  //
+  if (Index >= NoHandles)
+  {
+    //
+    // No Handle Found!!
+    //
+    gtBS->FreePool(HandleBuffer);
+    return EFI_UNSUPPORTED;
+  }
+
+  Status = gtBS->HandleProtocol (
+
+      HandleBuffer[Index],
+      &gBlackBoxEfiDevicePathProtocolGuid,
+      (VOID **) DevicePath
+      );
+
+
+  gtBS->FreePool(HandleBuffer);
+  return Status;
+}

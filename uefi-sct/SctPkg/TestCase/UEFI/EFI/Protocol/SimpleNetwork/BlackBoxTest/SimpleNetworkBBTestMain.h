@@ -357,6 +357,12 @@ BBTestReceiveConformanceTest (
   IN EFI_HANDLE                 SupportHandle
   );
 
+EFI_STATUS
+LocateDevicePathFromSnpInterface (
+  IN EFI_SIMPLE_NETWORK_PROTOCOL             *SnpInterface,
+  IN EFI_DEVICE_PATH_PROTOCOL                 **DevicePath,
+  IN EFI_STANDARD_TEST_LIBRARY_PROTOCOL       *StandardLib
+  );
 
 //
 // Prototypes of Internal Functions

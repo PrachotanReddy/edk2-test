@@ -28,9 +28,11 @@ Abstract:
 #define _ADAPTER_INFORMATION_BB_TEST_MAIN
 
 #include "Efi.h"
+#include <Base.h>
+#include "SctLib.h"
+#include "Guid.h"
 #include <Library/EfiTestLib.h>
 #include <UEFI/Protocol/AdapterInfo.h>
-#include "Guid.h"
 
 
 #define EFI_ADAPTER_INFORMATION_PROTOCOL_TEST_REVISION    0x00010000
@@ -160,12 +162,11 @@ BBTestGetSupportedTypesFunctionTest (
   IN EFI_HANDLE                 SupportHandle
   );
 
-
-VOID
-SctInitializeLib (
-  IN EFI_HANDLE                 ImageHandle,
-  IN EFI_SYSTEM_TABLE           *SystemTable
+EFI_STATUS
+LocateDevicePathFromAdapterInfo(
+  IN EFI_ADAPTER_INFORMATION_PROTOCOL *AdapterInfo,
+  IN EFI_DEVICE_PATH_PROTOCOL **DevicePath,
+  IN EFI_STANDARD_TEST_LIBRARY_PROTOCOL *StandardLib
   );
-
 
 #endif

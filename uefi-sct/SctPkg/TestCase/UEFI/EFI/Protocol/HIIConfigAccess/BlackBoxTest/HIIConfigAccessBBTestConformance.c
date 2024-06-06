@@ -120,7 +120,8 @@ BBTestExtractConfigConformanceTest (
   EFI_STATUS                            Status;
   EFI_HII_CONFIG_ACCESS_PROTOCOL        *HIIConfigAccess;
   EFI_HII_CONFIG_ROUTING_PROTOCOL       *HIIConfigRouting;
-  
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // init
   //
@@ -136,6 +137,28 @@ BBTestExtractConfigConformanceTest (
                    );
   if (EFI_ERROR(Status)) {
     return Status;
+  }
+  //
+  // Get Loaded Device Path of current EFI_HII_CONFIG_ACCESS_PROTOCOL
+  // And out put device path or device name
+  //
+  Status = LocateDevicePathFromHIIConfigAccess (HIIConfigAccess, &DevicePath);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if ( EFI_ERROR(Status) ) {
+        return Status;
+      }
+      DevicePathStr = NULL;
+    }
   }
 
   //
@@ -170,12 +193,12 @@ BBTestRouteConfigConformanceTest (
   EFI_STATUS                            Status;
   EFI_HII_CONFIG_ACCESS_PROTOCOL        *HIIConfigAccess;
   EFI_HII_CONFIG_ROUTING_PROTOCOL       *HIIConfigRouting;
-  
+  EFI_DEVICE_PATH_PROTOCOL             *DevicePath;
+  CHAR16                               *DevicePathStr;
   //
   // init
   //
   HIIConfigAccess = (EFI_HII_CONFIG_ACCESS_PROTOCOL*)ClientInterface;
-
   //
   // Get the Standard Library Interface
   //
@@ -187,7 +210,24 @@ BBTestRouteConfigConformanceTest (
   if (EFI_ERROR(Status)) {
     return Status;
   }
-
+  Status = LocateDevicePathFromHIIConfigAccess (HIIConfigAccess, &DevicePath);
+  if (Status == EFI_SUCCESS) {
+    DevicePathStr = NULL;
+    DevicePathStr = SctDevicePathToStr (DevicePath);
+    if (DevicePathStr != NULL) {
+      StandardLib->RecordMessage (
+                     StandardLib,
+                     EFI_VERBOSE_LEVEL_DEFAULT,
+                     L"Device Path: %s\r\n",
+                     DevicePathStr
+                     );
+      Status = gtBS->FreePool (DevicePathStr);
+      if ( EFI_ERROR(Status) ) {
+        return Status;
+      }
+      DevicePathStr = NULL;
+    }
+  }
   //
   // Get the Config Routing Protocol Interface
   //
@@ -195,7 +235,6 @@ BBTestRouteConfigConformanceTest (
   if ( EFI_ERROR(Status) ) {
     return Status;
   }
-  
   //
   //Call check points
   //
