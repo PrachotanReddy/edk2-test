@@ -23,7 +23,7 @@ Abstract:
   Test Driver of Adapter Information Protocol
 
 --*/
-
+#include "SctLib.h"
 #include "AdapterInfoBBTestMain.h"
 
 

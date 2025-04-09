@@ -31,7 +31,7 @@ Abstract:
 #include <Library/EfiTestLib.h>
 #include <UEFI/Protocol/AdapterInfo.h>
 #include "Guid.h"
-
+#include "SctLib.h"
 
 #define EFI_ADAPTER_INFORMATION_PROTOCOL_TEST_REVISION    0x00010000
 
@@ -158,13 +158,6 @@ BBTestGetSupportedTypesFunctionTest (
   IN VOID                       *ClientInterface,
   IN EFI_TEST_LEVEL             TestLevel,
   IN EFI_HANDLE                 SupportHandle
-  );
-
-
-VOID
-SctInitializeLib (
-  IN EFI_HANDLE                 ImageHandle,
-  IN EFI_SYSTEM_TABLE           *SystemTable
   );
 
 
